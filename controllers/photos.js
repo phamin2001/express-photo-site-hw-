@@ -16,6 +16,22 @@ router.get('/',(req, res) => {
     });
 });
 
+// new route
+router.get('/new', (req, res) => {
+    res.render('photos/new.ejs');
+});
+
+// create route
+router.post('/', (req, res) => {
+    Photo.create(req.body, (err, createdPhoto) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.redirect('/photos');
+        }
+    });
+})
+
 // show route
 router.get('/:id', (req, res) => {
     Photo.findById(req.params.id, (err, foundPhoto) => {
