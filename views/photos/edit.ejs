@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <header>
+    <h1>Edit a photo <%= photo.name %></h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/authors">Authors Index</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Edit Photo</h2>
+    <form action="/photos/<%=photo._id%>?_method=PUT" method="POST">
+      Title: <input type="text" name="title" value="<%=photo.title%>"><br>
+      Description: <input type="text" name="description" value="<%=photo.description%>"><br>
+      <button type="submit">Update Author</button>
+    </form>
+  </main>
+</body>
+</html>

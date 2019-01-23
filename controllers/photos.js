@@ -32,6 +32,32 @@ router.post('/', (req, res) => {
     });
 })
 
+// edit route
+router.get('/:id/edit', (req, res) => {
+    Photo.findById(req.params.id, (err, foundedPhoto) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.render('photos/edit.ejs', {
+                photo: foundPhoto
+            })
+        }
+    });
+});
+
+// update route
+router.put('/:id', (req, res) => {
+    Photo.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedPhoto) => {
+        if(err) {
+            res.send(err);
+        } else {
+            console.log(updatedPhoto);
+            res.redirect('/photos');
+        }
+    });
+});
+
+
 // show route
 router.get('/:id', (req, res) => {
     Photo.findById(req.params.id, (err, foundPhoto) => {
