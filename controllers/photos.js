@@ -29,6 +29,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// delete route
+router.delete('/:id', (req, res) => {
+    Photo.findByIdAndDelete(req.params.id, (err, deletedPhoto) => {
+        if(err) {
+            res.send(err);
+        } else {
+            console.log(deletedPhoto, 'This Photo is deleted.');
+            res.redirect('/photos');
+        }
+    });
+});
 
 
 module.exports = router;
