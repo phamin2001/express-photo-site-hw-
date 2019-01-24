@@ -57,12 +57,17 @@ router.get('/:id/edit', (req, res) => {
 // update route
 router.put('/:id', (req, res) => {
     Photo.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedPhoto) => {
-        if(err) {
-            res.send(err);
-        } else {
-            console.log(updatedPhoto);
-            res.redirect('/photos');
-        }
+        User.findById({'photos._id': req.params.id}, (err, foundUser) => {
+            foundUser.photos.id(req.params.id).remove();
+            foundUser.photos.push(updatedPhoto);
+            foundUser.save((err, data) => {
+                if(err) {
+                    res.send(err);
+                } else {
+                    res.redirect('/photos/' + req.params.id);
+                }
+            });
+        }); 
     });
 });
 
