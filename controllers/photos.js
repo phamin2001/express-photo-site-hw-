@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Photo = require('../models/photos');
-
+const User = require('../models/users');
 
 //index route
 router.get('/',(req, res) => {
@@ -18,17 +18,26 @@ router.get('/',(req, res) => {
 
 // new route
 router.get('/new', (req, res) => {
-    res.render('photos/new.ejs');
+    User.find({}, (err, allUsers) => {
+        res.render('photos/new.ejs', {
+            users: allUsers
+        })
+    });
 });
 
 // create route
 router.post('/', (req, res) => {
-    Photo.create(req.body, (err, createdPhoto) => {
-        if(err) {
-            res.send(err);
-        } else {
-            res.redirect('/photos');
-        }
+    User.findById(req.body.userId, (err, foundUser) => {
+        Photo.create(req.body, (err, createdPhoto) => {
+            if(err) {
+                res.send(err);
+            } else {
+                foundUser.photos.push(createdPhoto);
+                foundUser.save((err, newData) => {
+                    res.redirect('/photos');
+                });
+            }
+        });
     });
 })
 
@@ -56,7 +65,6 @@ router.put('/:id', (req, res) => {
         }
     });
 });
-
 
 // show route
 router.get('/:id', (req, res) => {
