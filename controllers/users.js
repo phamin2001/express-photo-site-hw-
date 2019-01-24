@@ -31,6 +31,31 @@ router.post('/', (req, res) =>{
     });
 });
 
+// edit route
+router.get('/:id/edit',(req, res) => {
+    User.findById(req.params.id, (err, foundUser) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.render('photos/edit.ejs', {
+                user: foundUser
+            })
+        }
+    });
+});
+
+// update route
+router.put('/:id', (req,res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedUser) => {
+        if(err) {
+            res.send(err);
+        } else {
+            console.log(updatedUser);
+            res.redirect('/users');
+        }
+    });
+});
+
 // show route
 router.get('/:id', (req, res) => {
     User.findById(req.params.id, (err, foundUser) => {
