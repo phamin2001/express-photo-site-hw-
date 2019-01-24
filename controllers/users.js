@@ -23,7 +23,9 @@ router.get('/new', (req, res) => {
 
 // create route
 router.post('/', (req, res) =>{
+    console.log(req.body);
     User.create(req.body, (err, createdUser) => {
+        
         if(err) {
             res.send(err);
         } else{

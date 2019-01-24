@@ -85,12 +85,16 @@ router.get('/:id', (req, res) => {
 // delete route
 router.delete('/:id', (req, res) => {
     Photo.findByIdAndDelete(req.params.id, (err, deletedPhoto) => {
-        if(err) {
-            res.send(err);
-        } else {
-            console.log(deletedPhoto, 'This Photo is deleted.');
-            res.redirect('/photos');
-        }
+        User.findOne({'photos._id': req.params.id}, (err, foundUser) => {
+            foundUser.photos.id(req.params.id).remove();
+            foundUser.save((err, data) => {
+                if(err) {
+                    res.send(err);
+                } else {
+                    res.redirect('/photos');
+                } 
+            })
+        });
     });
 });
 
