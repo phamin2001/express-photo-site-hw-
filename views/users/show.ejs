@@ -5,7 +5,7 @@
 </head>
 <body>
   <header>
-    <h1>Show Page for <%= photo.title %></h1>
+    <h1>Show Page for <%= user.name %></h1>
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
@@ -14,6 +14,17 @@
     </nav>
   </header>
   <main>
+
+  <section>
+    <h2>Pictures Taken By User</h2>
+    <ul>
+      <% for(let i = 0; i < user.photos.length; i++) { %>
+          <li><a href="/photos/<%=user.photos[i]._id%>"><%=user.photos[i].title%></a></li><br/>
+          <li><img src="<%user.photos[i].url%>"></li><br/>
+      <% } %>
+    </ul>
+  </section>
+
     <section>
       <h2>User Details</h2>
       <ul>
