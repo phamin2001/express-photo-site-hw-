@@ -75,12 +75,20 @@ router.get('/:id', (req, res) => {
 // delete route
 router.delete('/:id', (req, res) => {
     User.findByIdAndDelete(req.params.id, (err, deletedUser) => {
-        if(err) {
-            res.send(err);
-        } else {
-            console.log(deletedUser, 'This user is deleted.');
-            res.redirect('/users');
+        const photosIds = [];
+        for(let i = 0; i < deletedUser.photos.length; i++) {
+            photosIds.push(deletedUser.photos[i]._id);
         }
+        Photo.deleteMany(
+            {
+                _id: {
+                    $in: photosIds
+                }
+            }, 
+            (err, data) => {
+                res.redirect('/users');
+            }
+        );
     });
 });
 
