@@ -43,30 +43,48 @@ router.post('/', (req, res) => {
 
 // edit route
 router.get('/:id/edit', (req, res) => {
-    Photo.findById(req.params.id, (err, foundedPhoto) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.render('photos/edit.ejs', {
-                photo: foundPhoto
-            })
-        }
+    Photo.findById(req.params.id, (err, foundPhoto) => {
+        User.find({}, (err, allUsers) => {
+            User.findOne({'photos._id': req.params.id}, (err, photoUser) => {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.render('photos/edit.ejs', {
+                        photo: foundPhoto,
+                        users: allUsers,
+                        photoUser: photoUser
+                    })
+                }
+            });
+        });
     });
 });
 
 // update route
 router.put('/:id', (req, res) => {
     Photo.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedPhoto) => {
-        User.findById({'photos._id': req.params.id}, (err, foundUser) => {
-            foundUser.photos.id(req.params.id).remove();
-            foundUser.photos.push(updatedPhoto);
-            foundUser.save((err, data) => {
-                if(err) {
-                    res.send(err);
-                } else {
-                    res.redirect('/photos/' + req.params.id);
-                }
-            });
+        User.findOne({'photos._id': req.params.id}, (err, foundUser) => {
+            if(foundUser._id.toString() !== req.body.userId) {
+                foundUser.photos.id(req.params.id).remove();
+                foundUser.save((err, savedFoundUser) => {
+                    User.findById(req.body.userId, (err, newUser) => {
+                        newUser.photos.push(updatedPhoto);
+                        newUser.save((err, savedNewUser) => {
+                            res.redirect('/photos/' + req.params.id);
+                        });
+                    });
+                });
+            } else {
+                foundUser.photos.id(req.params.id).remove();
+                foundUser.photos.push(updatedPhoto);
+                foundUser.save((err, data) => {
+                    if(err) {
+                        res.send(err);
+                    } else {
+                        res.redirect('/photos/' + req.params.id);
+                    }
+                });
+            }
         }); 
     });
 });
