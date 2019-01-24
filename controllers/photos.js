@@ -69,13 +69,16 @@ router.put('/:id', (req, res) => {
 // show route
 router.get('/:id', (req, res) => {
     Photo.findById(req.params.id, (err, foundPhoto) => {
-        if(err) {
-            res.send(err);
-        } else {
-            res.render('photos/show.ejs', {
-                photo: foundPhoto
-            });
-        }
+        User.findOne({'photos._id': req.params.id}, (err, foundUser) => {
+            if(err) {
+                res.send(err);
+            } else {
+                res.render('photos/show.ejs', {
+                    photo: foundPhoto,
+                    user: foundUser
+                });
+            }
+        });
     });
 });
 

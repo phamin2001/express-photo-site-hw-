@@ -17,6 +17,8 @@
     <section>
       <h2>Photo Description</h2>
       <ul>
+        <li><%=photo.description%></li><br/>
+        <small>by: <a href="/users/<%=user._id%>"><%=user.name%></a> </small>
         <li><img src="<%=photo.url%>"> </li>
       </ul>
     </section>
