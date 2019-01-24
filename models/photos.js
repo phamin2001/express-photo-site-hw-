@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
-// require('mongoose-type-url');
 
-const photoShema = mongoose.Schema({
+const photoSchema = mongoose.Schema({
     title: {type: String, require: true},
-    // url:   {source: mongoose.SchemaTypes.Url}
     description: {type: String},
     url: {type: String, request: true, unique: true}
 });
 
-const Photo = mongoose.model('Photo', photoShema);
+const Photo = mongoose.model('Photo', photoSchema);
 
 module.exports = Photo;

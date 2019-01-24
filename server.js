@@ -6,8 +6,8 @@ const app = express();
 const photosController = require('./controllers/photos');
 app.use('/photos', photosController);
 
-// const mongooseTypeUrl = require('mongoose-type-url');
-// app.use(mongooseTypeUrl());
+const usersController = require('./controllers/users');
+app.use('/users', usersController);
 
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
