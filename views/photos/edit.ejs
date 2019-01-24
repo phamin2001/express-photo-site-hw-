@@ -19,16 +19,17 @@
 
       <select name="userId">
         <% for(let i = 0; i < users.length; i++) { %>
-              <option value="<%users[i]._id%>"
+              <option value="<%=users[i]._id%>"
                 <% if(users[i]._id.toString() === photoUser._id.toString()) { %>
                       selected
                 <% } %>              
-              ><%=users.name%></option> 
+              ><%=users[i].name%></option> 
         <% } %>
       </select>
       
-      Title: <input type="text" name="title" value="<%=photo.title%>"><br>
-      Description: <input type="text" name="description" value="<%=photo.description%>"><br>
+      Title: <input type="text" name="title" value="<%=photo.title%>"><br/>
+      Description: <input type="text" name="description" value="<%=photo.description%>"><br/>
+      Address: <input type="text" name="url" value="<%=photo.url%>"><br/>
       <button type="submit">Update Author</button>
     </form>
 
